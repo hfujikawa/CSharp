@@ -149,7 +149,7 @@ namespace MultiThreading
         //////////////////////////////////////////////////////////////////////////////
         public void DisplayResults()
         {
-            int i;
+            //int i;
 
             resultDataMutex.WaitOne();                              // CriticalSect
             //HTuple time               = resultData.timeNeeded;      // CriticalSect
@@ -274,20 +274,24 @@ namespace MultiThreading
                 newImgMutex.WaitOne();              // CriticalSect
                 //HImage image = (HImage)imgList[0];  // CriticalSect
                 //imgList.Remove(image);              // CriticalSect
-                Mat image = (Mat)imgList[0];
-                imgList.Remove(image);
+                startTime = DateTime.Now;
+                int cntEnd = imgList.Count > 1 ? 2 : 1;
+                for (int i = 0; i < cntEnd; i++)
+                {
+                    Mat image = (Mat)imgList[0];
+                    imgList.Remove(image);
+                    writer.Write(image);
+                }
                 newImgMutex.ReleaseMutex();         // CriticalSect
 
                 //HTuple t1 = HSystem.CountSeconds();
                 //sw.Start();
-                startTime = DateTime.Now;
                 //HTuple decodedDataStrings, resultHandle;
                 //HTuple resultHandle = null;
-                writer.Write(image);
 
                 //HXLD symbolXLDs = reader.FindDataCode2d(image, new  HTuple(),
                 //  new HTuple(), out resultHandle, out decodedDataStrings);
-                //Thread.Sleep(30);
+                Thread.Sleep(30);
 
                 //HTuple t2 = HSystem.CountSeconds();
                 //sw.Stop();
